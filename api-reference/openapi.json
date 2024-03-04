@@ -1,94 +1,381 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.3",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "PontoOn",
+    "version": "1.0.0",
+    "contact": {}
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
+      "url": "https://api-hml.ponto-on.com"
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
+    "/produto-stripe": {
+      "post": {
+        "tags": [
+          "Private (Admin)"
         ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+        "summary": "[Rota .On]Criar Produto para o Plano",
+        "description": "[Rota .On]Criar Produto para o Plano",
+        "operationId": "rotaOnCriarProdutoParaOPlano",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Dot Premium"
+                  }
+                }
+              },
+              "examples": {
+                "[Rota .On]Criar Produto para o Plano": {
+                  "value": {
+                    "name": "Dot Premium"
                   }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/produto-stripe/create-price": {
+      "post": {
+        "tags": [
+          "Private (Admin)"
+        ],
+        "summary": "[Rota .On]Criar Produto e Preco",
+        "description": "[Rota .On]Criar Produto e Preco",
+        "operationId": "rotaOnCriarProdutoEPreco",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "currency": {
+                    "type": "string",
+                    "example": "brl"
+                  },
+                  "product_data": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "Dot Premium"
+                      }
+                    }
+                  },
+                  "recurring": {
+                    "type": "object",
+                    "properties": {
+                      "interval": {
+                        "type": "string",
+                        "example": "month"
+                      },
+                      "trial_period_days": {
+                        "type": "number",
+                        "example": 7
+                      }
+                    }
+                  },
+                  "unit_amount": {
+                    "type": "number",
+                    "example": 35090
+                  }
+                }
+              },
+              "examples": {
+                "[Rota .On]Criar Produto e Preco": {
+                  "value": {
+                    "currency": "brl",
+                    "product_data": {
+                      "name": "Dot Premium"
+                    },
+                    "recurring": {
+                      "interval": "month",
+                      "trial_period_days": 7
+                    },
+                    "unit_amount": 35090
+                  }
                 }
               }
             }
           }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
         },
         "responses": {
           "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/webhook": {
+      "post": {
+        "tags": [
+          "Private (Admin)"
+        ],
+        "summary": "webhook-stripe",
+        "description": "webhook-stripe",
+        "operationId": "webhookStripe",
+        "parameters": [
+          {
+            "name": "stripe-signature",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "whsec_ce25228df6daa8d4b2dd02ec22f79148d2ed6fb5135f40f71b204ef569261e1b"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customer.subscription.updated": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "evt_1Of7SSFcaxGH4c3As2AxFoiR"
+                    },
+                    "example": [
+                      "evt_1Of7SSFcaxGH4c3As2AxFoiR"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "webhook-stripe": {
+                  "value": {
+                    "customer.subscription.updated": [
+                      "evt_1Of7SSFcaxGH4c3As2AxFoiR"
+                    ]
+                  }
                 }
               }
             }
-          },
-          "400": {
-            "description": "unexpected error",
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/empresas/retrieve-invoice/2": {
+      "get": {
+        "tags": [
+          "Private (Admin)"
+        ],
+        "summary": "Recuperar Fatura Stripe (EMpresa)",
+        "description": "Recuperar Fatura Stripe (EMpresa)",
+        "operationId": "recuperarFaturaStripeEmpresa",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/planos": {
+      "post": {
+        "tags": [
+          "Private (Admin)"
+        ],
+        "summary": "Criar plano Admin",
+        "description": "Criar plano Admin",
+        "operationId": "criarPlanoAdmin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mensalAnual": {
+                    "type": "string",
+                    "example": "month"
+                  },
+                  "moeda": {
+                    "type": "string",
+                    "example": "BRL"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "example": "Dot Drive"
+                  },
+                  "valorMensal": {
+                    "type": "number",
+                    "example": 9990
+                  }
+                }
+              },
+              "examples": {
+                "Criar plano Admin": {
+                  "value": {
+                    "mensalAnual": "month",
+                    "moeda": "BRL",
+                    "nome": "Dot Drive",
+                    "valorMensal": 9990
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Criar plano Admin",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "properties": {
+                    "mensalAnual": {
+                      "type": "string",
+                      "example": "month"
+                    },
+                    "moeda": {
+                      "type": "string",
+                      "example": "BRL"
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "Dot Drive"
+                    },
+                    "valorMensal": {
+                      "type": "number",
+                      "example": 9990
+                    }
+                  }
+                },
+                "examples": {
+                  "Criar plano Admin": {
+                    "value": {
+                      "mensalAnual": "month",
+                      "moeda": "BRL",
+                      "nome": "Dot Drive",
+                      "valorMensal": 9990
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/administradores": {
+      "post": {
+        "tags": [
+          "Private (Admin)"
+        ],
+        "summary": "[Rota .On]Criar Administradores",
+        "description": "[Rota .On]Criar Administradores",
+        "operationId": "rotaOnCriarAdministradores",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "teste@teste.com"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "example": ".On Tecnologia"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123456789"
+                  }
+                }
+              },
+              "examples": {
+                "[Rota .On]Criar Administradores": {
+                  "value": {
+                    "email": "teste@teste.com",
+                    "nome": ".On Tecnologia",
+                    "password": "123456789"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "[Rota .On]Criar Administradores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "teste1@teste.com"
+                    },
+                    "id": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": ".On Tecnologia"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "$2a$10$QkH5hNAgzjc/oucQLxat5uVuUeFTUh1RgyYGbg5q05m.TX9iaBvIu"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "admin"
+                    }
+                  }
+                },
+                "examples": {
+                  "[Rota .On]Criar Administradores": {
+                    "value": {
+                      "email": "teste1@teste.com",
+                      "id": 2,
+                      "nome": ".On Tecnologia",
+                      "password": "$2a$10$QkH5hNAgzjc/oucQLxat5uVuUeFTUh1RgyYGbg5q05m.TX9iaBvIu",
+                      "role": "admin"
+                    }
+                  }
                 }
               }
             }
@@ -96,34 +383,2375 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/empresas": {
+      "post": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Criar Empresa",
+        "description": "Criar Empresa",
+        "operationId": "criarEmpresa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cnpj": {
+                    "type": "string",
+                    "example": "99.999.999/0001-99"
+                  },
+                  "dataAbertura": {
+                    "type": "string",
+                    "example": "25/01/2026"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "teste@empresa.com"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "example": ".on Tecnlogia LTDA"
+                  },
+                  "nomeDoPlano": {
+                    "type": "string",
+                    "example": "Dot Drive"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123456789"
+                  },
+                  "razaoSocial": {
+                    "type": "string",
+                    "example": ".on Tecnologia LTDA"
+                  }
+                }
+              },
+              "examples": {
+                "Criar Empresa": {
+                  "value": {
+                    "cnpj": "99.999.999/0001-99",
+                    "dataAbertura": "25/01/2026",
+                    "email": "teste@empresa.com",
+                    "nome": ".on Tecnlogia LTDA",
+                    "nomeDoPlano": "Dot Drive",
+                    "password": "123456789",
+                    "razaoSocial": ".on Tecnologia LTDA"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Criar Empresa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "savedEmpresa": {
+                      "type": "object",
+                      "properties": {
+                        "assinaturaStatus": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "cnpj": {
+                          "type": "string",
+                          "example": "99.999.999/0001-99"
+                        },
+                        "dataAbertura": {
+                          "type": "string",
+                          "example": "25/01/2026"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "teste@empresa.com"
+                        },
+                        "endereco": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "fluxoCaixa": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "id": {
+                          "type": "number",
+                          "example": 9
+                        },
+                        "invoiceId": {
+                          "type": "string",
+                          "example": "in_1OiucnFcaxGH4c3A9x2SSI3d"
+                        },
+                        "nomeDoPlano": {
+                          "type": "string",
+                          "example": "Dot Drive"
+                        },
+                        "password": {
+                          "type": "string",
+                          "example": "$2a$10$OPnu1.nNj/VaI.I./HPn1u1Uj2IM9YF3NDdkV7I5B8NWqz5he/wSG"
+                        },
+                        "precoId": {
+                          "type": "string",
+                          "example": "prod_PUAfiEvbmr8vzt"
+                        },
+                        "razaoSocial": {
+                          "type": "string",
+                          "example": ".on Tecnologia LTDA"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "empresa_plan_basic"
+                        },
+                        "stripeCustomerId": {
+                          "type": "string",
+                          "example": "cus_PY0e0CbORQzBao"
+                        }
+                      }
+                    },
+                    "subscription": {
+                      "type": "object",
+                      "properties": {
+                        "application": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "application_fee_percent": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "automatic_tax": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "example": false
+                            },
+                            "liability": {
+                              "nullable": true,
+                              "example": null
+                            }
+                          }
+                        },
+                        "billing_cycle_anchor": {
+                          "type": "number",
+                          "example": 1708330345
+                        },
+                        "billing_cycle_anchor_config": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "billing_thresholds": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "cancel_at": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "cancel_at_period_end": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "canceled_at": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "cancellation_details": {
+                          "type": "object",
+                          "properties": {
+                            "comment": {
+                              "nullable": true,
+                              "example": null
+                            },
+                            "feedback": {
+                              "nullable": true,
+                              "example": null
+                            },
+                            "reason": {
+                              "nullable": true,
+                              "example": null
+                            }
+                          }
+                        },
+                        "collection_method": {
+                          "type": "string",
+                          "example": "charge_automatically"
+                        },
+                        "created": {
+                          "type": "number",
+                          "example": 1707725545
+                        },
+                        "currency": {
+                          "type": "string",
+                          "example": "brl"
+                        },
+                        "current_period_end": {
+                          "type": "number",
+                          "example": 1708330345
+                        },
+                        "current_period_start": {
+                          "type": "number",
+                          "example": 1707725545
+                        },
+                        "customer": {
+                          "type": "string",
+                          "example": "cus_PY0e0CbORQzBao"
+                        },
+                        "days_until_due": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "default_payment_method": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "default_source": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "default_tax_rates": {
+                          "type": "array",
+                          "items": {},
+                          "example": []
+                        },
+                        "description": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "discount": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "ended_at": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "id": {
+                          "type": "string",
+                          "example": "sub_1OiucnFcaxGH4c3AdzpPH8g3"
+                        },
+                        "invoice_settings": {
+                          "type": "object",
+                          "properties": {
+                            "account_tax_ids": {
+                              "nullable": true,
+                              "example": null
+                            },
+                            "issuer": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "self"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "billing_thresholds": {
+                                    "nullable": true,
+                                    "example": null
+                                  },
+                                  "created": {
+                                    "type": "number",
+                                    "example": 1707725545
+                                  },
+                                  "id": {
+                                    "type": "string",
+                                    "example": "si_PY0eUgHoirothQ"
+                                  },
+                                  "metadata": {
+                                    "type": "object",
+                                    "properties": {}
+                                  },
+                                  "object": {
+                                    "type": "string",
+                                    "example": "subscription_item"
+                                  },
+                                  "plan": {
+                                    "type": "object",
+                                    "properties": {
+                                      "active": {
+                                        "type": "boolean",
+                                        "example": true
+                                      },
+                                      "aggregate_usage": {
+                                        "nullable": true,
+                                        "example": null
+                                      },
+                                      "amount": {
+                                        "type": "number",
+                                        "example": 9990
+                                      },
+                                      "amount_decimal": {
+                                        "type": "string",
+                                        "example": "9990"
+                                      },
+                                      "billing_scheme": {
+                                        "type": "string",
+                                        "example": "per_unit"
+                                      },
+                                      "created": {
+                                        "type": "number",
+                                        "example": 1706840281
+                                      },
+                                      "currency": {
+                                        "type": "string",
+                                        "example": "brl"
+                                      },
+                                      "id": {
+                                        "type": "string",
+                                        "example": "price_1OfCKLFcaxGH4c3A7JNFE4Fx"
+                                      },
+                                      "interval": {
+                                        "type": "string",
+                                        "example": "month"
+                                      },
+                                      "interval_count": {
+                                        "type": "number",
+                                        "example": 1
+                                      },
+                                      "livemode": {
+                                        "type": "boolean",
+                                        "example": false
+                                      },
+                                      "metadata": {
+                                        "type": "object",
+                                        "properties": {}
+                                      },
+                                      "nickname": {
+                                        "nullable": true,
+                                        "example": null
+                                      },
+                                      "object": {
+                                        "type": "string",
+                                        "example": "plan"
+                                      },
+                                      "product": {
+                                        "type": "string",
+                                        "example": "prod_PUAfiEvbmr8vzt"
+                                      },
+                                      "tiers_mode": {
+                                        "nullable": true,
+                                        "example": null
+                                      },
+                                      "transform_usage": {
+                                        "nullable": true,
+                                        "example": null
+                                      },
+                                      "trial_period_days": {
+                                        "type": "number",
+                                        "example": 7
+                                      },
+                                      "usage_type": {
+                                        "type": "string",
+                                        "example": "licensed"
+                                      }
+                                    }
+                                  },
+                                  "price": {
+                                    "type": "object",
+                                    "properties": {
+                                      "active": {
+                                        "type": "boolean",
+                                        "example": true
+                                      },
+                                      "billing_scheme": {
+                                        "type": "string",
+                                        "example": "per_unit"
+                                      },
+                                      "created": {
+                                        "type": "number",
+                                        "example": 1706840281
+                                      },
+                                      "currency": {
+                                        "type": "string",
+                                        "example": "brl"
+                                      },
+                                      "custom_unit_amount": {
+                                        "nullable": true,
+                                        "example": null
+                                      },
+                                      "id": {
+                                        "type": "string",
+                                        "example": "price_1OfCKLFcaxGH4c3A7JNFE4Fx"
+                                      },
+                                      "livemode": {
+                                        "type": "boolean",
+                                        "example": false
+                                      },
+                                      "lookup_key": {
+                                        "nullable": true,
+                                        "example": null
+                                      },
+                                      "metadata": {
+                                        "type": "object",
+                                        "properties": {}
+                                      },
+                                      "nickname": {
+                                        "nullable": true,
+                                        "example": null
+                                      },
+                                      "object": {
+                                        "type": "string",
+                                        "example": "price"
+                                      },
+                                      "product": {
+                                        "type": "string",
+                                        "example": "prod_PUAfiEvbmr8vzt"
+                                      },
+                                      "recurring": {
+                                        "type": "object",
+                                        "properties": {
+                                          "aggregate_usage": {
+                                            "nullable": true,
+                                            "example": null
+                                          },
+                                          "interval": {
+                                            "type": "string",
+                                            "example": "month"
+                                          },
+                                          "interval_count": {
+                                            "type": "number",
+                                            "example": 1
+                                          },
+                                          "trial_period_days": {
+                                            "type": "number",
+                                            "example": 7
+                                          },
+                                          "usage_type": {
+                                            "type": "string",
+                                            "example": "licensed"
+                                          }
+                                        }
+                                      },
+                                      "tax_behavior": {
+                                        "type": "string",
+                                        "example": "unspecified"
+                                      },
+                                      "tiers_mode": {
+                                        "nullable": true,
+                                        "example": null
+                                      },
+                                      "transform_quantity": {
+                                        "nullable": true,
+                                        "example": null
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "example": "recurring"
+                                      },
+                                      "unit_amount": {
+                                        "type": "number",
+                                        "example": 9990
+                                      },
+                                      "unit_amount_decimal": {
+                                        "type": "string",
+                                        "example": "9990"
+                                      }
+                                    }
+                                  },
+                                  "quantity": {
+                                    "type": "number",
+                                    "example": 1
+                                  },
+                                  "subscription": {
+                                    "type": "string",
+                                    "example": "sub_1OiucnFcaxGH4c3AdzpPH8g3"
+                                  },
+                                  "tax_rates": {
+                                    "type": "array",
+                                    "items": {},
+                                    "example": []
+                                  }
+                                }
+                              },
+                              "example": [
+                                {
+                                  "billing_thresholds": null,
+                                  "created": 1707725545,
+                                  "id": "si_PY0eUgHoirothQ",
+                                  "metadata": {},
+                                  "object": "subscription_item",
+                                  "plan": {
+                                    "active": true,
+                                    "aggregate_usage": null,
+                                    "amount": 9990,
+                                    "amount_decimal": "9990",
+                                    "billing_scheme": "per_unit",
+                                    "created": 1706840281,
+                                    "currency": "brl",
+                                    "id": "price_1OfCKLFcaxGH4c3A7JNFE4Fx",
+                                    "interval": "month",
+                                    "interval_count": 1,
+                                    "livemode": false,
+                                    "metadata": {},
+                                    "nickname": null,
+                                    "object": "plan",
+                                    "product": "prod_PUAfiEvbmr8vzt",
+                                    "tiers_mode": null,
+                                    "transform_usage": null,
+                                    "trial_period_days": 7,
+                                    "usage_type": "licensed"
+                                  },
+                                  "price": {
+                                    "active": true,
+                                    "billing_scheme": "per_unit",
+                                    "created": 1706840281,
+                                    "currency": "brl",
+                                    "custom_unit_amount": null,
+                                    "id": "price_1OfCKLFcaxGH4c3A7JNFE4Fx",
+                                    "livemode": false,
+                                    "lookup_key": null,
+                                    "metadata": {},
+                                    "nickname": null,
+                                    "object": "price",
+                                    "product": "prod_PUAfiEvbmr8vzt",
+                                    "recurring": {
+                                      "aggregate_usage": null,
+                                      "interval": "month",
+                                      "interval_count": 1,
+                                      "trial_period_days": 7,
+                                      "usage_type": "licensed"
+                                    },
+                                    "tax_behavior": "unspecified",
+                                    "tiers_mode": null,
+                                    "transform_quantity": null,
+                                    "type": "recurring",
+                                    "unit_amount": 9990,
+                                    "unit_amount_decimal": "9990"
+                                  },
+                                  "quantity": 1,
+                                  "subscription": "sub_1OiucnFcaxGH4c3AdzpPH8g3",
+                                  "tax_rates": []
+                                }
+                              ]
+                            },
+                            "has_more": {
+                              "type": "boolean",
+                              "example": false
+                            },
+                            "object": {
+                              "type": "string",
+                              "example": "list"
+                            },
+                            "total_count": {
+                              "type": "number",
+                              "example": 1
+                            },
+                            "url": {
+                              "type": "string",
+                              "example": "/v1/subscription_items?subscription=sub_1OiucnFcaxGH4c3AdzpPH8g3"
+                            }
+                          }
+                        },
+                        "latest_invoice": {
+                          "type": "string",
+                          "example": "in_1OiucnFcaxGH4c3A9x2SSI3d"
+                        },
+                        "livemode": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "metadata": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "next_pending_invoice_item_invoice": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "object": {
+                          "type": "string",
+                          "example": "subscription"
+                        },
+                        "on_behalf_of": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "pause_collection": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "payment_settings": {
+                          "type": "object",
+                          "properties": {
+                            "payment_method_options": {
+                              "nullable": true,
+                              "example": null
+                            },
+                            "payment_method_types": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "card"
+                              },
+                              "example": [
+                                "card"
+                              ]
+                            },
+                            "save_default_payment_method": {
+                              "type": "string",
+                              "example": "off"
+                            }
+                          }
+                        },
+                        "pending_invoice_item_interval": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "pending_setup_intent": {
+                          "type": "string",
+                          "example": "seti_1OiucnFcaxGH4c3AOAztDvY5"
+                        },
+                        "pending_update": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "plan": {
+                          "type": "object",
+                          "properties": {
+                            "active": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "aggregate_usage": {
+                              "nullable": true,
+                              "example": null
+                            },
+                            "amount": {
+                              "type": "number",
+                              "example": 9990
+                            },
+                            "amount_decimal": {
+                              "type": "string",
+                              "example": "9990"
+                            },
+                            "billing_scheme": {
+                              "type": "string",
+                              "example": "per_unit"
+                            },
+                            "created": {
+                              "type": "number",
+                              "example": 1706840281
+                            },
+                            "currency": {
+                              "type": "string",
+                              "example": "brl"
+                            },
+                            "id": {
+                              "type": "string",
+                              "example": "price_1OfCKLFcaxGH4c3A7JNFE4Fx"
+                            },
+                            "interval": {
+                              "type": "string",
+                              "example": "month"
+                            },
+                            "interval_count": {
+                              "type": "number",
+                              "example": 1
+                            },
+                            "livemode": {
+                              "type": "boolean",
+                              "example": false
+                            },
+                            "metadata": {
+                              "type": "object",
+                              "properties": {}
+                            },
+                            "nickname": {
+                              "nullable": true,
+                              "example": null
+                            },
+                            "object": {
+                              "type": "string",
+                              "example": "plan"
+                            },
+                            "product": {
+                              "type": "string",
+                              "example": "prod_PUAfiEvbmr8vzt"
+                            },
+                            "tiers_mode": {
+                              "nullable": true,
+                              "example": null
+                            },
+                            "transform_usage": {
+                              "nullable": true,
+                              "example": null
+                            },
+                            "trial_period_days": {
+                              "type": "number",
+                              "example": 7
+                            },
+                            "usage_type": {
+                              "type": "string",
+                              "example": "licensed"
+                            }
+                          }
+                        },
+                        "quantity": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "schedule": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "start_date": {
+                          "type": "number",
+                          "example": 1707725545
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "trialing"
+                        },
+                        "test_clock": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "transfer_data": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "trial_end": {
+                          "type": "number",
+                          "example": 1708330345
+                        },
+                        "trial_settings": {
+                          "type": "object",
+                          "properties": {
+                            "end_behavior": {
+                              "type": "object",
+                              "properties": {
+                                "missing_payment_method": {
+                                  "type": "string",
+                                  "example": "create_invoice"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "trial_start": {
+                          "type": "number",
+                          "example": 1707725545
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Criar Empresa": {
+                    "value": {
+                      "savedEmpresa": {
+                        "assinaturaStatus": null,
+                        "cnpj": "99.999.999/0001-99",
+                        "dataAbertura": "25/01/2026",
+                        "email": "teste@empresa.com",
+                        "endereco": null,
+                        "fluxoCaixa": null,
+                        "id": 9,
+                        "invoiceId": "in_1OiucnFcaxGH4c3A9x2SSI3d",
+                        "nomeDoPlano": "Dot Drive",
+                        "password": "$2a$10$OPnu1.nNj/VaI.I./HPn1u1Uj2IM9YF3NDdkV7I5B8NWqz5he/wSG",
+                        "precoId": "prod_PUAfiEvbmr8vzt",
+                        "razaoSocial": ".on Tecnologia LTDA",
+                        "role": "empresa_plan_basic",
+                        "stripeCustomerId": "cus_PY0e0CbORQzBao"
+                      },
+                      "subscription": {
+                        "application": null,
+                        "application_fee_percent": null,
+                        "automatic_tax": {
+                          "enabled": false,
+                          "liability": null
+                        },
+                        "billing_cycle_anchor": 1708330345,
+                        "billing_cycle_anchor_config": null,
+                        "billing_thresholds": null,
+                        "cancel_at": null,
+                        "cancel_at_period_end": false,
+                        "canceled_at": null,
+                        "cancellation_details": {
+                          "comment": null,
+                          "feedback": null,
+                          "reason": null
+                        },
+                        "collection_method": "charge_automatically",
+                        "created": 1707725545,
+                        "currency": "brl",
+                        "current_period_end": 1708330345,
+                        "current_period_start": 1707725545,
+                        "customer": "cus_PY0e0CbORQzBao",
+                        "days_until_due": null,
+                        "default_payment_method": null,
+                        "default_source": null,
+                        "default_tax_rates": [],
+                        "description": null,
+                        "discount": null,
+                        "ended_at": null,
+                        "id": "sub_1OiucnFcaxGH4c3AdzpPH8g3",
+                        "invoice_settings": {
+                          "account_tax_ids": null,
+                          "issuer": {
+                            "type": "self"
+                          }
+                        },
+                        "items": {
+                          "data": [
+                            {
+                              "billing_thresholds": null,
+                              "created": 1707725545,
+                              "id": "si_PY0eUgHoirothQ",
+                              "metadata": {},
+                              "object": "subscription_item",
+                              "plan": {
+                                "active": true,
+                                "aggregate_usage": null,
+                                "amount": 9990,
+                                "amount_decimal": "9990",
+                                "billing_scheme": "per_unit",
+                                "created": 1706840281,
+                                "currency": "brl",
+                                "id": "price_1OfCKLFcaxGH4c3A7JNFE4Fx",
+                                "interval": "month",
+                                "interval_count": 1,
+                                "livemode": false,
+                                "metadata": {},
+                                "nickname": null,
+                                "object": "plan",
+                                "product": "prod_PUAfiEvbmr8vzt",
+                                "tiers_mode": null,
+                                "transform_usage": null,
+                                "trial_period_days": 7,
+                                "usage_type": "licensed"
+                              },
+                              "price": {
+                                "active": true,
+                                "billing_scheme": "per_unit",
+                                "created": 1706840281,
+                                "currency": "brl",
+                                "custom_unit_amount": null,
+                                "id": "price_1OfCKLFcaxGH4c3A7JNFE4Fx",
+                                "livemode": false,
+                                "lookup_key": null,
+                                "metadata": {},
+                                "nickname": null,
+                                "object": "price",
+                                "product": "prod_PUAfiEvbmr8vzt",
+                                "recurring": {
+                                  "aggregate_usage": null,
+                                  "interval": "month",
+                                  "interval_count": 1,
+                                  "trial_period_days": 7,
+                                  "usage_type": "licensed"
+                                },
+                                "tax_behavior": "unspecified",
+                                "tiers_mode": null,
+                                "transform_quantity": null,
+                                "type": "recurring",
+                                "unit_amount": 9990,
+                                "unit_amount_decimal": "9990"
+                              },
+                              "quantity": 1,
+                              "subscription": "sub_1OiucnFcaxGH4c3AdzpPH8g3",
+                              "tax_rates": []
+                            }
+                          ],
+                          "has_more": false,
+                          "object": "list",
+                          "total_count": 1,
+                          "url": "/v1/subscription_items?subscription=sub_1OiucnFcaxGH4c3AdzpPH8g3"
+                        },
+                        "latest_invoice": "in_1OiucnFcaxGH4c3A9x2SSI3d",
+                        "livemode": false,
+                        "metadata": {},
+                        "next_pending_invoice_item_invoice": null,
+                        "object": "subscription",
+                        "on_behalf_of": null,
+                        "pause_collection": null,
+                        "payment_settings": {
+                          "payment_method_options": null,
+                          "payment_method_types": [
+                            "card"
+                          ],
+                          "save_default_payment_method": "off"
+                        },
+                        "pending_invoice_item_interval": null,
+                        "pending_setup_intent": "seti_1OiucnFcaxGH4c3AOAztDvY5",
+                        "pending_update": null,
+                        "plan": {
+                          "active": true,
+                          "aggregate_usage": null,
+                          "amount": 9990,
+                          "amount_decimal": "9990",
+                          "billing_scheme": "per_unit",
+                          "created": 1706840281,
+                          "currency": "brl",
+                          "id": "price_1OfCKLFcaxGH4c3A7JNFE4Fx",
+                          "interval": "month",
+                          "interval_count": 1,
+                          "livemode": false,
+                          "metadata": {},
+                          "nickname": null,
+                          "object": "plan",
+                          "product": "prod_PUAfiEvbmr8vzt",
+                          "tiers_mode": null,
+                          "transform_usage": null,
+                          "trial_period_days": 7,
+                          "usage_type": "licensed"
+                        },
+                        "quantity": 1,
+                        "schedule": null,
+                        "start_date": 1707725545,
+                        "status": "trialing",
+                        "test_clock": null,
+                        "transfer_data": null,
+                        "trial_end": 1708330345,
+                        "trial_settings": {
+                          "end_behavior": {
+                            "missing_payment_method": "create_invoice"
+                          }
+                        },
+                        "trial_start": 1707725545
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/funcionarios": {
+      "post": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Criar funcionários",
+        "description": "Criar funcionários",
+        "operationId": "criarFuncionRios",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cargo": {
+                    "type": "string",
+                    "example": "Desenvolvedor Junior"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "example": "123.123.123-20"
+                  },
+                  "dataNascimento": {
+                    "type": "string",
+                    "example": "14/05/1996"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "teste@funcionario.com"
+                  },
+                  "empresaId": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "escalaTrabalhoId": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "nome": {
+                    "type": "string",
+                    "example": "Leticia Ferreira de Lima"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123456789"
+                  },
+                  "telefone": {
+                    "type": "string",
+                    "example": "31996745309"
+                  }
+                }
+              },
+              "examples": {
+                "Criar funcionários": {
+                  "value": {
+                    "cargo": "Desenvolvedor Junior",
+                    "cpf": "123.123.123-20",
+                    "dataNascimento": "14/05/1996",
+                    "email": "teste@funcionario.com",
+                    "empresaId": 2,
+                    "escalaTrabalhoId": 1,
+                    "nome": "Leticia Ferreira de Lima",
+                    "password": "123456789",
+                    "telefone": "31996745309"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Criar funcionários",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string",
+                  "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyYXphb1NvY2lhbCI6IlJIIENPTk5FQ1QgTFREQSIsImVtYWlsIjoidGVzdGUxQHRlc3RlLmNvbSIsImNucGoiOiI0Mi4wNDMuMzE0LzAwMDEtODkiLCJkYXRhQWJlcnR1cmEiOiIyNS8wMS8yMDI0Iiwicm9sZSI6ImVtcHJlc2EifSwiaWF0IjoxNzA2MzgwNTgxLCJleHAiOjE3MDYzODQxODF9.GiPn0dj3FZe_bMJPcbS9IH6orA4oBbDlBuc-tWpMEbM"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cargo": {
+                      "type": "string",
+                      "example": "Desenvolvedor Junior"
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "example": "123.123.123-20"
+                    },
+                    "dataNascimento": {
+                      "type": "string",
+                      "example": "14/05/1996"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "teste@funcionario.com"
+                    },
+                    "empresaId": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "escalaTrabalhoId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "Leticia Ferreira de Lima"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "alsdkjalksjdo@8123iasjdoaisjdoi"
+                    },
+                    "telefone": {
+                      "type": "string",
+                      "example": "31996745309"
+                    }
+                  }
+                },
+                "examples": {
+                  "Criar funcionários": {
+                    "value": {
+                      "cargo": "Desenvolvedor Junior",
+                      "cpf": "123.123.123-20",
+                      "dataNascimento": "14/05/1996",
+                      "email": "teste@funcionario.com",
+                      "empresaId": 2,
+                      "escalaTrabalhoId": 1,
+                      "nome": "Leticia Ferreira de Lima",
+                      "password": "alsdkjalksjdo@8123iasjdoaisjdoi",
+                      "telefone": "31996745309"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/escalatrabalhos": {
+      "post": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Criar Escala de trabalho",
+        "description": "Criar Escala de trabalho",
+        "operationId": "criarEscalaDeTrabalho",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "empresaId": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "horarios": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "entrada": {
+                          "type": "string",
+                          "example": "08:00"
+                        },
+                        "retornoAlmoco": {
+                          "type": "string",
+                          "example": 780
+                        },
+                        "saida": {
+                          "type": "string",
+                          "example": 1080
+                        },
+                        "saidaAlmoco": {
+                          "type": "string",
+                          "example": 720
+                        }
+                      }
+                    },
+                    "example": [
+                      {
+                        "entrada": "08:00",
+                        "retornoAlmoco": 780,
+                        "saida": 1080,
+                        "saidaAlmoco": 720
+                      }
+                    ]
+                  },
+                  "nome": {
+                    "type": "string",
+                    "example": "Horário Normal"
+                  }
+                }
+              },
+              "examples": {
+                "Criar Escala de trabalho": {
+                  "value": {
+                    "empresaId": 1,
+                    "horarios": [
+                      {
+                        "entrada": "08:00",
+                        "retornoAlmoco": 780,
+                        "saida": 1080,
+                        "saidaAlmoco": 720
+                      }
+                    ],
+                    "nome": "Horário Normal"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Criar Escala de trabalho",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "empresaId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "horarios": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "entrada": {
+                            "type": "string",
+                            "example": "08:00"
+                          },
+                          "retornoAlmoco": {
+                            "type": "string",
+                            "example": 780
+                          },
+                          "saida": {
+                            "type": "string",
+                            "example": 1080
+                          },
+                          "saidaAlmoco": {
+                            "type": "string",
+                            "example": 720
+                          }
+                        }
+                      },
+                      "example": [
+                        {
+                          "entrada": "08:00",
+                          "retornoAlmoco": 780,
+                          "saida": 1080,
+                          "saidaAlmoco": 720
+                        }
+                      ]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "Horário Normal"
+                    }
+                  }
+                },
+                "examples": {
+                  "Criar Escala de trabalho": {
+                    "value": {
+                      "empresaId": 1,
+                      "horarios": [
+                        {
+                          "entrada": "08:00",
+                          "retornoAlmoco": 780,
+                          "saida": 1080,
+                          "saidaAlmoco": 720
+                        }
+                      ],
+                      "nome": "Horário Normal"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/registropontos/empresa/45": {
+      "put": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Aprovar AjustePonto [Empresa]",
+        "description": "Aprovar AjustePonto [Empresa]",
+        "operationId": "aprovarAjustepontoEmpresa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "ajuste aprovado pela empresa"
+                  }
+                }
+              },
+              "examples": {
+                "Aprovar AjustePonto [Empresa]": {
+                  "value": {
+                    "status": "ajuste aprovado pela empresa"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Aprovar AjustePonto [Empresa]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "Aprovar AjustePonto [Empresa]": {
+                    "value": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/funcionarios/espelho/1/1/": {
+      "get": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Espelho ponto por periodo",
+        "description": "Espelho ponto por periodo",
+        "operationId": "espelhoPontoPorPeriodo",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
+            "name": "dataInicio",
+            "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string",
+              "example": "2024-02-16T00:00:00.000Z"
+            }
+          },
+          {
+            "name": "dataFim",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "2024-03-02T00:00:00.000Z"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "Espelho ponto por periodo",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "properties": {
+                    "diasTrabalhados": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "espelhoPonto": {
+                      "type": "object",
+                      "properties": {
+                        "Thu Feb 15 2024 21:00:00 GMT-0300 (Horário Padrão de Brasília)": {
+                          "type": "object",
+                          "properties": {
+                            "horasTrabalhada": {
+                              "type": "string",
+                              "example": "00:00:00"
+                            },
+                            "registros": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "falta": {
+                                    "type": "boolean",
+                                    "example": true
+                                  },
+                                  "horarioRegistro": {
+                                    "type": "string",
+                                    "example": "2024-02-16T19:40:10.000Z"
+                                  },
+                                  "houveAjuste": {
+                                    "nullable": true,
+                                    "example": null
+                                  },
+                                  "localizacao": {
+                                    "type": "string",
+                                    "example": "-8.2936035, -35.955603"
+                                  },
+                                  "motivoAjuste": {
+                                    "nullable": true,
+                                    "example": null
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "example": "falta"
+                                  },
+                                  "tipo": {
+                                    "type": "string",
+                                    "example": "falta"
+                                  }
+                                }
+                              },
+                              "example": [
+                                {
+                                  "falta": true,
+                                  "horarioRegistro": "2024-02-16T19:40:10.000Z",
+                                  "houveAjuste": null,
+                                  "localizacao": "-8.2936035, -35.955603",
+                                  "motivoAjuste": null,
+                                  "status": "falta",
+                                  "tipo": "falta"
+                                },
+                                {
+                                  "falta": true,
+                                  "horarioRegistro": "2024-02-16T19:40:16.000Z",
+                                  "houveAjuste": null,
+                                  "localizacao": "-8.2936035, -35.955603",
+                                  "motivoAjuste": null,
+                                  "status": "falta",
+                                  "tipo": "falta"
+                                },
+                                {
+                                  "falta": true,
+                                  "horarioRegistro": "2024-02-16T19:40:19.000Z",
+                                  "houveAjuste": null,
+                                  "localizacao": "-8.2936035, -35.955603",
+                                  "motivoAjuste": null,
+                                  "status": "falta",
+                                  "tipo": "falta"
+                                },
+                                {
+                                  "falta": true,
+                                  "horarioRegistro": "2024-02-16T19:40:24.000Z",
+                                  "houveAjuste": null,
+                                  "localizacao": "-8.2936035, -35.955603",
+                                  "motivoAjuste": null,
+                                  "status": "falta",
+                                  "tipo": "falta"
+                                },
+                                {
+                                  "falta": true,
+                                  "horarioRegistro": "2024-02-16T19:40:28.000Z",
+                                  "houveAjuste": null,
+                                  "localizacao": "-8.2936035, -35.955603",
+                                  "motivoAjuste": null,
+                                  "status": "falta",
+                                  "tipo": "falta"
+                                },
+                                {
+                                  "falta": true,
+                                  "horarioRegistro": "2024-02-16T19:40:04.000Z",
+                                  "houveAjuste": null,
+                                  "localizacao": "-8.2936035, -35.955603",
+                                  "motivoAjuste": null,
+                                  "status": "falta",
+                                  "tipo": "falta"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "horasExtrasTotais": {
+                      "type": "string",
+                      "example": "00:00:00"
+                    },
+                    "horasTotais": {
+                      "type": "string",
+                      "example": "00:00:00"
+                    },
+                    "valorHora": {
+                      "type": "string",
+                      "example": "50.00"
+                    },
+                    "valorParaPagar": {
+                      "type": "string",
+                      "example": "R$ 0,00"
+                    }
+                  }
+                },
+                "examples": {
+                  "Espelho ponto por periodo": {
+                    "value": {
+                      "diasTrabalhados": 0,
+                      "espelhoPonto": {
+                        "Thu Feb 15 2024 21:00:00 GMT-0300 (Horário Padrão de Brasília)": {
+                          "horasTrabalhada": "00:00:00",
+                          "registros": [
+                            {
+                              "falta": true,
+                              "horarioRegistro": "2024-02-16T19:40:10.000Z",
+                              "houveAjuste": null,
+                              "localizacao": "-8.2936035, -35.955603",
+                              "motivoAjuste": null,
+                              "status": "falta",
+                              "tipo": "falta"
+                            },
+                            {
+                              "falta": true,
+                              "horarioRegistro": "2024-02-16T19:40:16.000Z",
+                              "houveAjuste": null,
+                              "localizacao": "-8.2936035, -35.955603",
+                              "motivoAjuste": null,
+                              "status": "falta",
+                              "tipo": "falta"
+                            },
+                            {
+                              "falta": true,
+                              "horarioRegistro": "2024-02-16T19:40:19.000Z",
+                              "houveAjuste": null,
+                              "localizacao": "-8.2936035, -35.955603",
+                              "motivoAjuste": null,
+                              "status": "falta",
+                              "tipo": "falta"
+                            },
+                            {
+                              "falta": true,
+                              "horarioRegistro": "2024-02-16T19:40:24.000Z",
+                              "houveAjuste": null,
+                              "localizacao": "-8.2936035, -35.955603",
+                              "motivoAjuste": null,
+                              "status": "falta",
+                              "tipo": "falta"
+                            },
+                            {
+                              "falta": true,
+                              "horarioRegistro": "2024-02-16T19:40:28.000Z",
+                              "houveAjuste": null,
+                              "localizacao": "-8.2936035, -35.955603",
+                              "motivoAjuste": null,
+                              "status": "falta",
+                              "tipo": "falta"
+                            },
+                            {
+                              "falta": true,
+                              "horarioRegistro": "2024-02-16T19:40:04.000Z",
+                              "houveAjuste": null,
+                              "localizacao": "-8.2936035, -35.955603",
+                              "motivoAjuste": null,
+                              "status": "falta",
+                              "tipo": "falta"
+                            }
+                          ]
+                        }
+                      },
+                      "horasExtrasTotais": "00:00:00",
+                      "horasTotais": "00:00:00",
+                      "valorHora": "50.00",
+                      "valorParaPagar": "R$ 0,00"
+                    }
+                  }
                 }
               }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/funcionarios/empresa/1": {
+      "get": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Listar Funcionários por empresa{id}",
+        "description": "Listar Funcionários por empresa{id}",
+        "operationId": "listarFuncionRiosPorEmpresaId",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "10"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/registropontos/1/marcar-falta/2024-02-17": {
+      "post": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Marcar falta para o Funcionário",
+        "description": "Marcar falta para o Funcionário",
+        "operationId": "marcarFaltaParaOFuncionRio",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/funcionarios/espelho/1/1/diario/": {
+      "get": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Relatório de ponto diário (espelho)",
+        "description": "Relatório de ponto diário (espelho)",
+        "operationId": "relatRioDePontoDiRioEspelho",
+        "parameters": [
+          {
+            "name": "dataInicio",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "2024-02-16T00:00:00.000Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/registropontos/pendentes/1": {
+      "get": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Solicitações pendentes de pontos",
+        "description": "Solicitações pendentes de pontos",
+        "operationId": "solicitaEsPendentesDePontos",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/registropontos/departamento/tecnologia": {
+      "get": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Relatório de Ponto por Departamento/Equipe",
+        "description": "Relatório de Ponto por Departamento/Equipe",
+        "operationId": "relatRioDePontoPorDepartamentoEquipe",
+        "parameters": [
+          {
+            "name": "dataInicio",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "2024/02/16"
+            }
+          },
+          {
+            "name": "dataFim",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "2024/02/31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/departamentos/1/1/funcionarios": {
+      "get": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Listar usuários por departamentoId",
+        "description": "Listar usuários por departamentoId",
+        "operationId": "listarUsuRiosPorDepartamentoid",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "10"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/empresas/1/foto": {
+      "post": {
+        "tags": [
+          "Endpoints para Empresas"
+        ],
+        "summary": "Atualizar Foto Perfil Empresa",
+        "description": "Atualizar Foto Perfil Empresa",
+        "operationId": "atualizarFotoPerfilEmpresa",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "foto": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/login/funcionario": {
+      "post": {
+        "tags": [
+          "Endpoints para Funcionários"
+        ],
+        "summary": "Login Funcionario",
+        "description": "Login Funcionario",
+        "operationId": "loginFuncionario",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codeVerify": {
+                    "type": "string",
+                    "example": "831740"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "funcionario@email.com"
+                  }
+                }
+              },
+              "examples": {
+                "Login Funcionario": {
+                  "value": {
+                    "codeVerify": "831740",
+                    "email": "funcionario@email.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login Funcionario",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7fSwiaWF0IjoxNzA3NzI2OTA5LCJleHAiOjE3MDc3MzA1MDl9.smylvh1wog3pW_ydIzUv7ioC1Ul3lJdu3NNdLw5c1X4"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                },
+                "examples": {
+                  "Login Funcionario": {
+                    "value": {
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7fSwiaWF0IjoxNzA3NzI2OTA5LCJleHAiOjE3MDc3MzA1MDl9.smylvh1wog3pW_ydIzUv7ioC1Ul3lJdu3NNdLw5c1X4",
+                      "user": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/recovery/funcionario": {
+      "post": {
+        "tags": [
+          "Endpoints para Funcionários"
+        ],
+        "summary": "Recovery Code - Funcionario",
+        "description": "Recovery Code - Funcionario",
+        "operationId": "recoveryCodeFuncionario",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "telefone": {
+                    "type": "string",
+                    "example": "31996745309"
+                  }
+                }
+              },
+              "examples": {
+                "Recovery Code - Funcionario": {
+                  "value": {
+                    "telefone": "31996745309"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Recovery Code - Funcionario",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                },
+                "examples": {
+                  "Recovery Code - Funcionario": {
+                    "value": {
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/registropontos/solicitar/45": {
+      "put": {
+        "tags": [
+          "Endpoints para Funcionários"
+        ],
+        "summary": "Solicitar Ajuste de ponto [Funcionário",
+        "description": "Solicitar Ajuste de ponto [Funcionário",
+        "operationId": "solicitarAjusteDePontoFuncionRio",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataSolicitar": {
+                    "type": "string",
+                    "example": "2024-02-12T20:00:00.000Z"
+                  },
+                  "funcionarioId": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "motivo": {
+                    "type": "string",
+                    "example": "Esqueci de registrar"
+                  }
+                }
+              },
+              "examples": {
+                "Solicitar Ajuste de ponto [Funcionário": {
+                  "value": {
+                    "dataSolicitar": "2024-02-12T20:00:00.000Z",
+                    "funcionarioId": 1,
+                    "motivo": "Esqueci de registrar"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Solicitar Ajuste de ponto [Funcionário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "Solicitar Ajuste de ponto [Funcionário": {
+                    "value": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/registropontos": {
+      "post": {
+        "tags": [
+          "Endpoints para Funcionários"
+        ],
+        "summary": "Bater Ponto (Funcionário)",
+        "description": "Bater Ponto (Funcionário)",
+        "operationId": "baterPontoFuncionRio",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "endereco": {
+                    "type": "string",
+                    "example": "Rua teste da silva"
+                  },
+                  "funcionarioId": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              },
+              "examples": {
+                "Bater Ponto (Funcionário)": {
+                  "value": {
+                    "endereco": "Rua teste da silva",
+                    "funcionarioId": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "https://api-hml.ponto-on.com/registropontos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dataSolicitar": {
+                      "nullable": true,
+                      "example": null
+                    },
+                    "funcionario": {
+                      "type": "object",
+                      "properties": {
+                        "ativo": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "cargo": {
+                          "type": "string",
+                          "example": "Desenvolvedor fraco"
+                        },
+                        "cidade": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "clt": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "codeMatricula": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "codeVerify": {
+                          "type": "string",
+                          "example": "$2a$12$IS5m4zyqfAJtISiXGiGiQeuAMHw4LFutmCBpCrtZwklcCkXLfVY1a"
+                        },
+                        "cpfcnpj": {
+                          "type": "string",
+                          "example": "123.456.789-01"
+                        },
+                        "dataAdmissao": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "dataNascimento": {
+                          "type": "string",
+                          "example": "1990-01-01T00:00:00.000Z"
+                        },
+                        "deviceToken": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "funcionario@email.com"
+                        },
+                        "endereco": {
+                          "type": "string",
+                          "example": "Rua Gumercindo Pereira dos Santos"
+                        },
+                        "fotoProfile": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "horarioTrabalho": {
+                          "type": "number",
+                          "example": 9
+                        },
+                        "id": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "nispis": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "nome": {
+                          "type": "string",
+                          "example": "teste dos testes"
+                        },
+                        "pj": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "registrosPonto": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "dataSolicitar": {
+                                "type": "string",
+                                "nullable": true,
+                                "example": null
+                              },
+                              "horarioRegistro": {
+                                "type": "string",
+                                "example": "2024-02-12T05:20:29.000Z"
+                              },
+                              "houveReajuste": {
+                                "type": "boolean",
+                                "nullable": true,
+                                "example": null
+                              },
+                              "id": {
+                                "type": "number",
+                                "example": 46
+                              },
+                              "localizacao": {
+                                "type": "string",
+                                "example": "-8.2936035, -35.955603"
+                              },
+                              "motivoAjuste": {
+                                "type": "string",
+                                "nullable": true,
+                                "example": null
+                              },
+                              "status": {
+                                "type": "string",
+                                "example": "aprovado automaticamente"
+                              },
+                              "tipo": {
+                                "type": "string",
+                                "example": "almoço"
+                              }
+                            }
+                          },
+                          "example": [
+                            {
+                              "dataSolicitar": null,
+                              "horarioRegistro": "2024-02-12T05:20:29.000Z",
+                              "houveReajuste": null,
+                              "id": 46,
+                              "localizacao": "-8.2936035, -35.955603",
+                              "motivoAjuste": null,
+                              "status": "aprovado automaticamente",
+                              "tipo": "almoço"
+                            },
+                            {
+                              "dataSolicitar": "2024-02-12T17:00:00.000Z",
+                              "horarioRegistro": "2024-02-12T01:53:58.000Z",
+                              "houveReajuste": true,
+                              "id": 45,
+                              "localizacao": "-8.2936035, -35.955603",
+                              "motivoAjuste": "Esqueci de registrar",
+                              "status": "ajuste aprovado pela empresa",
+                              "tipo": "entrada"
+                            }
+                          ]
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "funcionario"
+                        },
+                        "sentimento": {
+                          "type": "string",
+                          "example": "Neutro"
+                        },
+                        "sobreaviso": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "telefone": {
+                          "type": "string",
+                          "example": "31996745309"
+                        },
+                        "uf": {
+                          "nullable": true,
+                          "example": null
+                        },
+                        "valorHora": {
+                          "nullable": true,
+                          "example": null
+                        }
+                      }
+                    },
+                    "horarioRegistro": {
+                      "type": "string",
+                      "example": "2024-02-12T05:40:24.000Z"
+                    },
+                    "houveReajuste": {
+                      "nullable": true,
+                      "example": null
+                    },
+                    "id": {
+                      "type": "number",
+                      "example": 47
+                    },
+                    "localizacao": {
+                      "type": "string",
+                      "example": "-8.9999999, -35.999999"
+                    },
+                    "motivoAjuste": {
+                      "nullable": true,
+                      "example": null
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "aprovado automaticamente"
+                    },
+                    "tipo": {
+                      "type": "string",
+                      "example": "retorno almoço"
+                    }
+                  }
+                },
+                "examples": {
+                  "https://api-hml.ponto-on.com/registropontos": {
+                    "value": {
+                      "dataSolicitar": null,
+                      "funcionario": {
+                        "ativo": true,
+                        "cargo": "Desenvolvedor fraco",
+                        "cidade": null,
+                        "clt": false,
+                        "codeMatricula": null,
+                        "codeVerify": "$2a$12$IS5m4zyqfAJtISiXGiGiQeuAMHw4LFutmCBpCrtZwklcCkXLfVY1a",
+                        "cpfcnpj": "123.456.789-01",
+                        "dataAdmissao": null,
+                        "dataNascimento": "1990-01-01T00:00:00.000Z",
+                        "deviceToken": null,
+                        "email": "funcionario@email.com",
+                        "endereco": "Rua Gumercindo Pereira dos Santos",
+                        "fotoProfile": null,
+                        "horarioTrabalho": 9,
+                        "id": 1,
+                        "nispis": null,
+                        "nome": "teste dos testes",
+                        "pj": false,
+                        "registrosPonto": [
+                          {
+                            "dataSolicitar": null,
+                            "horarioRegistro": "2024-02-12T05:20:29.000Z",
+                            "houveReajuste": null,
+                            "id": 46,
+                            "localizacao": "-8.2936035, -35.955603",
+                            "motivoAjuste": null,
+                            "status": "aprovado automaticamente",
+                            "tipo": "almoço"
+                          },
+                          {
+                            "dataSolicitar": "2024-02-12T17:00:00.000Z",
+                            "horarioRegistro": "2024-02-12T01:53:58.000Z",
+                            "houveReajuste": true,
+                            "id": 45,
+                            "localizacao": "-8.2936035, -35.955603",
+                            "motivoAjuste": "Esqueci de registrar",
+                            "status": "ajuste aprovado pela empresa",
+                            "tipo": "entrada"
+                          }
+                        ],
+                        "role": "funcionario",
+                        "sentimento": "Neutro",
+                        "sobreaviso": false,
+                        "telefone": "31996745309",
+                        "uf": null,
+                        "valorHora": null
+                      },
+                      "horarioRegistro": "2024-02-12T05:40:24.000Z",
+                      "houveReajuste": null,
+                      "id": 47,
+                      "localizacao": "-8.9999999, -35.999999",
+                      "motivoAjuste": null,
+                      "status": "aprovado automaticamente",
+                      "tipo": "retorno almoço"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/funcionarios/1/foto": {
+      "post": {
+        "tags": [
+          "Endpoints para Funcionários"
+        ],
+        "summary": "Foto Funcionário",
+        "description": "Foto Funcionário",
+        "operationId": "fotoFuncionRio",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "foto": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth Empresas"
+        ],
+        "summary": "Login Empresas",
+        "description": "Endpoint para login de empresas",
+        "operationId": "loginUsuRios",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "teste@teste.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "82384580"
+                  }
+                }
+              },
+              "examples": {
+                "Login Usuários": {
+                  "value": {
+                    "email": "teste@teste.com",
+                    "password": "82384580"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJub21lIjoiUkhDT05ORUNUIiwiZW1haWwiOiJ0ZXN0ZUB0ZXN0ZS5jb20iLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNzA5NTg4NDcxLCJleHAiOjE3MDk1OTIwNzF9.AZfjoP40PBHEk0sgulwikehL7xYX78SUd1NUiXB7cmk",
+            "user": {
+              "id": 1,
+              "nome": "RHCONNECT",
+              "email": "teste@teste.com",
+              "role": "admin"
             }
           }
         }
@@ -131,65 +2759,25 @@
     }
   },
   "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer"
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Private (Admin)"
+    },
+    {
+      "name": "Endpoints para Empresas"
+    },
+    {
+      "name": "Endpoints para Funcionários"
+    },
+    {
+      "name": "Auth Empresas e Admins"
+    }
+  ]
 }
