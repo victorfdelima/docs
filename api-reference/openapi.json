@@ -1942,9 +1942,9 @@
         "tags": [
           "Endpoints para Empresas"
         ],
-        "summary": "Listar Funcionários por empresa{id}",
-        "description": "Listar Funcionários por empresa{id}",
-        "operationId": "listarFuncionRiosPorEmpresaId",
+        "summary": "Listar Funcionários por empresaId",
+        "description": "Listar Funcionários por empresaId",
+        "operationId": "listarFuncionariosPorEmpresaId",
         "parameters": [
           {
             "name": "page",
@@ -2729,7 +2729,7 @@
                   },
                   "password": {
                     "type": "string",
-                    "example": "82384580"
+                    "example": "123456789"
                   }
                 }
               },
@@ -2746,13 +2746,7 @@
         },
         "responses": {
           "200": {
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJub21lIjoiUkhDT05ORUNUIiwiZW1haWwiOiJ0ZXN0ZUB0ZXN0ZS5jb20iLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNzA5NTg4NDcxLCJleHAiOjE3MDk1OTIwNzF9.AZfjoP40PBHEk0sgulwikehL7xYX78SUd1NUiXB7cmk",
-            "user": {
-              "id": 1,
-              "nome": "RHCONNECT",
-              "email": "teste@teste.com",
-              "role": "admin"
-            }
+            "description": ""
           }
         }
       }

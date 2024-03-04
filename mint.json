@@ -78,7 +78,18 @@
     {
       "group": "Endpoint para empresas",
       "pages": [
-        "api-reference/endpoints-para-empresas/aprovar-ajusteponto-[empresa]"
+        "api-reference/endpoints-para-empresas/aprovar-ajusteponto-[empresa]",
+        "api-reference/endpoints-para-empresas/atualizar-foto-perfil-empresa",
+        "api-reference/endpoints-para-empresas/criar-empresa",
+        "api-reference/endpoints-para-empresas/criar-escala-de-trabalho",
+        "api-reference/endpoints-para-empresas/criar-funcionários",
+        "api-reference/endpoints-para-empresas/espelho-ponto-por-periodo",
+        "api-reference/endpoints-para-empresas/listar-funcionarios-por-empresa",
+        "api-reference/endpoints-para-empresas/listar-usuários-por-departamentoid",
+        "api-reference/endpoints-para-empresas/marcar-falta-para-o-funcionário",
+        "api-reference/endpoints-para-empresas/relatório-de-ponto-diário-espelho",
+        "api-reference/endpoints-para-empresas/relatório-de-ponto-por-departamentoequipe",
+        "api-reference/endpoints-para-empresas/solicitações-pendentes-de-pontos"
       ]
     }
   ],
