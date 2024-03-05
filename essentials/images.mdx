@@ -1,59 +1,54 @@
 ---
-title: 'Images and Embeds'
-description: 'Add image, video, and other HTML elements'
-icon: 'image'
+title: "Endpoints de Administração"
+description: "Descrição dos endpoints de administração na API da Ponto-On"
+icon: "code"
 ---
 
-<img
-  style={{ borderRadius: '0.5rem' }}
-  src="https://mintlify-assets.b-cdn.net/bigbend.jpg"
-/>
+## Introdução
 
-## Image
+Nesta seção, são apresentados os endpoints de administração da API da Ponto-On. Esses endpoints são projetados para fornecer funcionalidades administrativas específicas, como gerenciamento de usuários, configurações de sistema e operações relacionadas à conta.
 
-### Using Markdown
+### Aviso Importante
 
-The [markdown syntax](https://www.markdownguide.org/basic-syntax/#images) lets you add images using the following code
+Por se tratar de operações administrativas que lidam com dados críticos, como informações de pagamento (Stripe), criação de produtos e configurações sensíveis, é fundamental utilizar esses endpoints com cautela. Certifique-se de ter os privilégios e autorizações adequados antes de acessá-los. Além disso, recomendamos realizar testes em ambientes de desenvolvimento antes de aplicar qualquer alteração em produção.
 
-```md
-![title](/path/image.jpg)
-```
+---
 
-Note that the image file size must be less than 5MB. Otherwise, we recommend hosting on a service like [Cloudinary](https://cloudinary.com/) or [S3](https://aws.amazon.com/s3/). You can then use that URL and embed.
+### Endpoint: /admins/
 
-### Using Embeds
+Este endpoint permite realizar operações de gerenciamento de usuários administrativos, como criação, atualização e exclusão de contas de administradores e funcionários.
 
-To get more customizability with images, you can also use [embeds](/writing-content/embed) to add images
+#### Métodos HTTP Suportados:
 
-```html
-<img height="200" src="/path/image.jpg" />
-```
+- **GET**: Obter informações sobre usuários administrativos.
+- **POST**: Criar um novo usuário administrativo.
+- **PUT**: Atualizar os detalhes de um usuário administrativo existente.
+- **DELETE**: Remover um usuário administrativo do sistema.
 
-## Embeds and HTML elements
+#### Exemplo de Uso:
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/4KzFe50RQkQ"
-  title="YouTube video player"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-  style={{ width: '100%', borderRadius: '0.5rem' }}
-></iframe>
+```sh
+# Obter informações sobre todos os usuários administrativos
+curl --location --request GET 'https://api.ponto-on.com/admins/'
 
-<br />
+# Criar um novo usuário administrativo
+curl --location --request POST 'https://api.ponto-on.com/admin/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "nome": "Nome do Administrador",
+    "email": "admin@example.com",
+    "senha": "senha123",
+    "role": "admin"
+}'
 
-<Tip>
+# Atualizar os detalhes de um usuário administrativo existente
+curl --location --request PUT 'https://api.ponto-on.com/admin/1' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "nome": "Novo Nome do Administrador",
+    "email": "novoadmin@example.com"
+}'
 
-Mintlify supports [HTML tags in Markdown](https://www.markdownguide.org/basic-syntax/#html). This is helpful if you prefer HTML tags to Markdown syntax, and lets you create documentation with infinite flexibility.
-
-</Tip>
-
-### iFrames
-
-Loads another HTML page within the document. Most commonly used for embedding videos.
-
-```html
-<iframe src="https://www.youtube.com/embed/4KzFe50RQkQ"> </iframe>
+# Remover um usuário administrativo do sistema
+curl --location --request DELETE 'https://api.ponto-on.com/admin/1'
 ```

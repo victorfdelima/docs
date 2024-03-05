@@ -1,98 +1,36 @@
 ---
-title: 'Development'
-description: 'Learn how to preview changes locally'
+title: "Desenvolvimento"
+description: "Guia de Desenvolvimento da API da Ponto-On para gerenciamento de ponto para empresas"
+icon: "code"
 ---
 
-<Info>
-  **Prerequisite** You should have installed Node.js (version 18.10.0 or
-  higher).
-</Info>
+## Introdução
 
-Step 1. Install Mintlify on your OS:
+Este guia destina-se aos desenvolvedores internos da Ponto-On que estão envolvidos no desenvolvimento e manutenção da API de gerenciamento de ponto para empresas. Ele fornece uma visão geral da arquitetura da API, as tecnologias utilizadas, as boas práticas de desenvolvimento e os procedimentos de teste.
 
-<CodeGroup>
+### Arquitetura da API
 
-```bash npm
-npm i -g mintlify
-```
+A API de gerenciamento de ponto para empresas da Ponto-On é desenvolvida seguindo uma arquitetura RESTful. Ela consiste em uma série de endpoints que permitem às empresas realizar operações relacionadas ao registro de ponto dos seus colaboradores, como registro de entrada e saída, ajustes de horário, e consulta de relatórios.
 
-```bash yarn
-yarn global add mintlify
-```
+### Tecnologias Utilizadas
 
-</CodeGroup>
+A API é desenvolvida utilizando o framework NestJS, que é baseado no Node.js. O banco de dados utilizado é o PostgreSQL para armazenamento dos dados relacionais e o Redis para armazenamento de cache e sessões.
 
-Step 2. Go to the docs are located (where you can find `mint.json`) and run the following command:
+### Boas Práticas de Desenvolvimento
 
-```bash
-mintlify dev
-```
+- **Padrões de Codificação**: Seguir as convenções de codificação e estilo definidas pela equipe de desenvolvimento.
+- **Documentação**: Manter a documentação da API atualizada e completa, utilizando o padrão OpenAPI.
+- **Segurança**: Implementar medidas de segurança, como autenticação e autorização, para proteger os dados sensíveis dos usuários.
+- **Testes Unitários e de Integração**: Escrever testes unitários e de integração para garantir a qualidade e robustez do código.
+- **Controle de Versão**: Utilizar um sistema de controle de versão, como o Git, para gerenciar o código-fonte e as mudanças no projeto.
 
-The documentation website is now available at `http://localhost:3000`.
+### Procedimentos de Teste
 
-### Custom Ports
+Antes de enviar qualquer alteração para produção, é importante realizar uma série de testes para garantir que o código funciona conforme esperado e não introduza regressões ou problemas de segurança. Isso inclui:
 
-Mintlify uses port 3000 by default. You can use the `--port` flag to customize the port Mintlify runs on. For example, use this command to run in port 3333:
+- Testes Unitários: Verificar se cada função ou método individual funciona corretamente.
+- Testes de Integração: Testar a interação entre diferentes componentes da aplicação.
+- Testes de API: Testar os endpoints da API para garantir que eles respondam corretamente e retornem os dados esperados.
+- Testes de Performance: Avaliar o desempenho da API sob carga e identificar possíveis gargalos ou pontos de melhoria.
 
-```bash
-mintlify dev --port 3333
-```
-
-You will see an error like this if you try to run Mintlify in a port that's already taken:
-
-```md
-Error: listen EADDRINUSE: address already in use :::3000
-```
-
-## Mintlify Versions
-
-Each CLI is linked to a specific version of Mintlify. Please update the CLI if your local website looks different than production.
-
-<CodeGroup>
-
-```bash npm
-npm i -g mintlify@latest
-```
-
-```bash yarn
-yarn global upgrade mintlify
-```
-
-</CodeGroup>
-
-## Deployment
-
-<Tip>
-  Unlimited editors available under the [Startup
-  Plan](https://mintlify.com/pricing)
-</Tip>
-
-You should see the following if the deploy successfully went through:
-
-<Frame>
-  <img src="/images/checks-passed.png" style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-## Troubleshooting
-
-Here's how to solve some common problems when working with the CLI.
-
-<AccordionGroup>
-  <Accordion title="Mintlify is not loading">
-    Update to Node v18. Run `mintlify install` and try again.
-  </Accordion>
-  <Accordion title="No such file or directory on Windows">
-Go to the `C:/Users/Username/.mintlify/` directory and remove the `mint`
-folder. Then Open the Git Bash in this location and run `git clone
-https://github.com/mintlify/mint.git`.
-
-Repeat step 3.
-
-  </Accordion>
-  <Accordion title="Getting an unknown error">
-    Try navigating to the root of your device and delete the ~/.mintlify folder.
-    Then run `mintlify dev` again.
-  </Accordion>
-</AccordionGroup>
-
-Curious about what changed in a CLI version? [Check out the CLI changelog.](/changelog/command-line)
+Ao seguir essas boas práticas e procedimentos de teste, podemos garantir que a API de gerenciamento de ponto para empresas da Ponto-On seja robusta, segura e confiável para nossos clientes.

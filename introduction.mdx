@@ -1,71 +1,57 @@
 ---
-title: Introduction
-description: 'Welcome to the home of your new documentation'
+title: "Introdução a API da Ponto-On"
+description: "Feito com ❤"
 ---
 
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.svg"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.svg"
-  alt="Hero Dark"
-/>
+Bem-vindo à documentação da Ponto-On, a sua API REST para consultas e monitoramento do sistema de controle de ponto para empresas em todo o Brasil. Desenvolvemos esta plataforma com o objetivo de tornar o acesso ao controle de ponto mais rápido, mais fácil e mais acessível.
 
-## Setting up
+## Sobre a Ponto-On
 
-The first step to world-class documentation is setting up your editing environments.
+Na .On, nossa missão é transformar a gestão de tempo em uma vantagem estratégica para empresas. Somos apaixonados por fornecer soluções inovadoras para simplificar processos, impulsionar a eficiência e liberar o potencial da sua equipe.
 
-<CardGroup cols={2}>
-  <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
-  >
-    Get your docs set up locally for easy development
-  </Card>
-  <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
-  >
-    Preview your changes before you push to make sure they're perfect
-  </Card>
-</CardGroup>
+## Funcionalidades
 
-## Make it yours
+### Gestão de Colaboradores
 
-Update your docs to your brand and add valuable content for the best user conversion.
+- **Colaboradores:** Centralize os dados e informações de todos os colaboradores da sua empresa em um único lugar.
+- **Férias e Afastamento:** Gerencie os períodos de férias e afastamentos de forma organizada e simplificada.
+- **Criação de Equipes:** Organize os colaboradores em equipes para uma gestão mais eficaz e colaborativa.
 
-<CardGroup cols={2}>
-  <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
-  </Card>
-  <Card
-    title="Reference APIs"
-    icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
-  >
-    Automatically generate endpoints from an OpenAPI spec
-  </Card>
-  <Card
-    title="Add Components"
-    icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/components/accordion"
-  >
-    Build interactive features and designs to guide your users
-  </Card>
-  <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
-  >
-    Check out our showcase of our favorite documentation
-  </Card>
-</CardGroup>
+### Controle de Ponto
+
+- **Relatórios de Ponto:** Acesse relatórios detalhados e precisos sobre os registros de ponto dos seus colaboradores.
+- **Ajuste de Ponto:** Realize ajustes necessários nos registros de ponto de forma rápida e eficiente.
+- **Banco de Horas:** Controle e gerencie o saldo de horas trabalhadas de maneira automática e eficiente.
+
+### Integrações e Notificações
+
+- **Integrações com Sistema de Folha de Pagamento:** Conecte-se facilmente com o sistema de folha de pagamento da sua empresa para uma gestão integrada.
+- **Envio de Notificações:** Mantenha os colaboradores informados sobre eventos importantes e atualizações através de notificações instantâneas.
+
+### Facilidade de Uso e Suporte
+
+- **Registro de Ponto por Aplicativo:** Permita que os colaboradores registrem o ponto de forma prática e móvel através de um aplicativo dedicado.
+- **Central de Ajuda:** Acesse recursos e suporte para tirar dúvidas e solucionar problemas de forma rápida e eficiente.
+
+<Card
+title="Começar pelo login Empresas"
+icon="leaf"
+href="https://docs.ponto-on.com/api-reference/auth-empresas-e-admins/login-usuários"
+
+>
+
+    Testar o endpoint
+
+</Card>
+
+## Autenticação
+
+Todos os endpoints da API são autenticados usando tokens de portador (Bearer) e são extraídos do arquivo de especificação.
+
+```json
+"Security": [
+  {
+    "token": `Bearer alskdlasjdkaclkansqiwnokmdlqkmsdiqmodm(TOKEN DE TESTE)`
+  }
+]
+```

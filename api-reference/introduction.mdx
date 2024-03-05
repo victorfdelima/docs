@@ -1,33 +1,57 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Introdução a API da Ponto-On"
+description: "Feito com ❤"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+Bem-vindo à documentação da Ponto-On, a sua API REST para consultas e monitoramento do sistema de controle de ponto para empresas em todo o Brasil. Desenvolvemos esta plataforma com o objetivo de tornar o acesso ao controle de ponto mais rápido, mais fácil e mais acessível.
 
-## Welcome
+## Sobre a Ponto-On
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+Na .On, nossa missão é transformar a gestão de tempo em uma vantagem estratégica para empresas. Somos apaixonados por fornecer soluções inovadoras para simplificar processos, impulsionar a eficiência e liberar o potencial da sua equipe.
+
+## Funcionalidades
+
+### Gestão de Colaboradores
+
+- **Colaboradores:** Centralize os dados e informações de todos os colaboradores da sua empresa em um único lugar.
+- **Férias e Afastamento:** Gerencie os períodos de férias e afastamentos de forma organizada e simplificada.
+- **Criação de Equipes:** Organize os colaboradores em equipes para uma gestão mais eficaz e colaborativa.
+
+### Controle de Ponto
+
+- **Relatórios de Ponto:** Acesse relatórios detalhados e precisos sobre os registros de ponto dos seus colaboradores.
+- **Ajuste de Ponto:** Realize ajustes necessários nos registros de ponto de forma rápida e eficiente.
+- **Banco de Horas:** Controle e gerencie o saldo de horas trabalhadas de maneira automática e eficiente.
+
+### Integrações e Notificações
+
+- **Integrações com Sistema de Folha de Pagamento:** Conecte-se facilmente com o sistema de folha de pagamento da sua empresa para uma gestão integrada.
+- **Envio de Notificações:** Mantenha os colaboradores informados sobre eventos importantes e atualizações através de notificações instantâneas.
+
+### Facilidade de Uso e Suporte
+
+- **Registro de Ponto por Aplicativo:** Permita que os colaboradores registrem o ponto de forma prática e móvel através de um aplicativo dedicado.
+- **Central de Ajuda:** Acesse recursos e suporte para tirar dúvidas e solucionar problemas de forma rápida e eficiente.
 
 <Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
+title="Começar pelo login Empresas"
+icon="leaf"
+href="https://docs.ponto-on.com/api-reference/auth-empresas-e-admins/login-usuários"
+
 >
-  View the OpenAPI specification file
+
+    Testar o endpoint
+
 </Card>
 
-## Authentication
+## Autenticação
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Todos os endpoints da API são autenticados usando tokens de portador (Bearer) e são extraídos do arquivo de especificação.
 
 ```json
-"security": [
+"Security": [
   {
-    "bearerAuth": []
+    "token": `Bearer alskdlasjdkaclkansqiwnokmdlqkmsdiqmodm(TOKEN DE TESTE)`
   }
 ]
 ```

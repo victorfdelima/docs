@@ -1,37 +1,45 @@
 ---
-title: 'Code Blocks'
-description: 'Display inline code and code blocks'
-icon: 'code'
+title: "Guia de Registro de Empresa via cURL"
+description: "Instruções para registrar uma empresa utilizando cURL"
+icon: "code"
 ---
 
-## Basic
+## Introdução
 
-### Inline Code
+Este guia fornece instruções passo a passo para registrar uma empresa na plataforma Ponto-On utilizando o comando cURL. Siga as etapas abaixo para enviar os dados necessários e concluir o registro da sua empresa.
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+### Passo 1: Preparar o Comando cURL
+
+1. Abra um terminal ou prompt de comando no seu sistema operacional.
+
+2. Copie o seguinte comando cURL:
+
+```sh
+curl --location 'https://3f1d3b51-c0d0-4381-a5b8-8387fbb78dc3.mock.pstmn.io/empresas' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "nome": ".on Tecnologia LTDA",
+    "email": "teste@empresa.com",
+    "password": "123456789",
+    "razaoSocial": ".on Tecnologia LTDA",
+    "cnpj": "99.999.999/0001-99",
+    "dataAbertura": "25/01/2026",
+    "nomeDoPlano": "Dot Drive",
+    "role": "empresa_plan_basic"
+}'
 
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
 
-### Code Block
+### Passo 2: Executar o Comando cURL
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
+3. Cole o comando cURL no terminal ou prompt de comando e pressione Enter para executá-lo.
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
+4. Aguarde a resposta do servidor e verifique se o registro da empresa foi concluído com sucesso.
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-````
+### Passo 3: Verificar o Resultado
+
+5. Após executar o comando cURL, verifique se a resposta do servidor indica sucesso no registro da empresa.
+
+6. Caso encontre algum erro ou problema durante o registro, revise os dados fornecidos e tente novamente.
+
+Siga estas etapas cuidadosamente para garantir um registro bem-sucedido da sua empresa na plataforma Ponto-On utilizando o comando cURL.

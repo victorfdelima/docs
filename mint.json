@@ -17,17 +17,17 @@
   },
   "topbarLinks": [
     {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "name": "Suporte",
+      "url": "mailto:development@ponto-on.com"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Ponto-On",
+    "url": "https://ponto-on.com"
   },
   "tabs": [
     {
-      "name": "API Reference",
+      "name": "Referência da API",
       "url": "api-reference"
     }
   ],
@@ -35,32 +35,27 @@
     {
       "name": "Documentation",
       "icon": "book-open-cover",
-      "url": "https://docs.ponto-on.com"
+      "url": "https://docs.ponto-on.com/introduction"
     },
     {
-      "name": "Site Ponto-On",
+      "name": "Conferir funcionalidades",
       "icon": "newspaper",
-      "url": "https://ponto-on.com"
+      "url": "https://docs.ponto-on.com/api-reference/introduction"
     }
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Começando",
       "pages": [
         "introduction",
-        "quickstart",
         "development"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Essencial Saber",
       "pages": [
-        "essentials/markdown",
         "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "essentials/images"
       ]
     },
     {
@@ -70,14 +65,9 @@
       ]
     },
     {
-      "group": "Login Empresas",
-      "pages": [
-        "api-reference/auth-empresas-e-admins/login-usuários"
-      ]
-    },
-    {
       "group": "Endpoint para empresas",
       "pages": [
+        "api-reference/auth-empresas-e-admins/login-usuários",
         "api-reference/endpoints-para-empresas/aprovar-ajusteponto-[empresa]",
         "api-reference/endpoints-para-empresas/atualizar-foto-perfil-empresa",
         "api-reference/endpoints-para-empresas/criar-empresa",
@@ -90,6 +80,16 @@
         "api-reference/endpoints-para-empresas/relatório-de-ponto-diário-espelho",
         "api-reference/endpoints-para-empresas/relatório-de-ponto-por-departamentoequipe",
         "api-reference/endpoints-para-empresas/solicitações-pendentes-de-pontos"
+      ]
+    },
+    {
+      "group": "Endpoint para Funcionários",
+      "pages": [
+        "api-reference/endpoints-para-funcionários/bater-ponto-funcionário",
+        "api-reference/endpoints-para-funcionários/foto-funcionário",
+        "api-reference/endpoints-para-funcionários/login-funcionario",
+        "api-reference/endpoints-para-funcionários/recovery-code--funcionario",
+        "api-reference/endpoints-para-funcionários/solicitar-ajuste-de-ponto-[funcionário"
       ]
     }
   ],
